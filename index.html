@@ -34,6 +34,13 @@
     --silver-soft: #8f949c;
     --silver-glow: rgba(191,196,204,0.15);
 }
+    
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
 
 body {
     font-family: "Calibri", sans;
@@ -77,17 +84,19 @@ button:hover {
 }
 
 #result {
-    margin-top: 50px;
+    margin-top: 40px;
     max-width: 650px;
     margin-left: auto;
     margin-right: auto;
     background-color: #111114;
     padding: 40px;
     border: 1px solid #1c1f26;
+    border-radius: 6px;
     box-shadow: 0 0 40px rgba(0,0,0,0.6),
                 0 0 20px var(--silver-glow);
     line-height: 1.7;
-    border-radius: 6px;
+    max-height: 55vh;
+    overflow-y: auto;
 }
 
 .card-title {
