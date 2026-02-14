@@ -99,6 +99,15 @@ button:hover {
     margin: 0 auto;
     text-align: center;
 }
+
+#copyNotice {
+    margin-top: 15px;
+    font-size: 13px;
+    color: var(--silver);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    text-align: center;
+}
 </style>
 </head>
 
@@ -118,6 +127,7 @@ button:hover {
 <button onclick="randomCard()">random</button>
 
 <div id="result"></div>
+    <div id="copyNotice"></div>
 
 <script src="deck.js"></script>
 
@@ -186,7 +196,6 @@ function displayCard(num, orientation) {
 async function copyReading(num, orientation) {
 
     const card = deck.find(c => c.num === num);
-
     if (!card) return;
 
     const keywords = orientation === "upright"
@@ -206,20 +215,20 @@ growth: ${card["growth edge"]}`;
 
     try {
         await navigator.clipboard.writeText(text);
-        alert("copied to clipboard");
+        showCopyNotice();
     } catch (err) {
         fallbackCopy(text);
+        showCopyNotice();
     }
 }
+function showCopyNotice() {
+    const notice = document.getElementById("copyNotice");
+    notice.textContent = "copied";
+    notice.style.opacity = 1;
 
-function fallbackCopy(text) {
-    const textarea = document.createElement("textarea");
-    textarea.value = text;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textarea);
-    alert("copied to clipboard");
+    setTimeout(() => {
+        notice.style.opacity = 0;
+    }, 1800);
 }
 
 </script>
