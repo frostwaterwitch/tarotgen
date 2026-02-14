@@ -5,12 +5,11 @@
 
 <style>
 body {
-    font-family: Arial, sans-serif;
+    font-family: Georgia, serif;
     text-align: center;
-    background-color: #111;
-    color: #e6e6e6;
-    margin: 0;
-    padding: 40px;
+    background-color: #0e0e0f;
+    color: #e8e6e3;
+    padding: 50px;
 }
 
 input, select, button {
@@ -19,13 +18,11 @@ input, select, button {
     font-size: 16px;
 }
 
-button {
-    cursor: pointer;
-}
-
 #result {
-    margin-top: 30px;
-    font-size: 20px;
+    margin-top: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
     line-height: 1.6;
 }
 </style>
@@ -35,68 +32,74 @@ button {
 
 <h2>tarot lookup</h2>
 
-<input type="number" id="manualNumber" placeholder="enter 0–77" min="0" max="77">
-<select id="orientationSelect">
+<input type="number" id="cardNumber" placeholder="0–77" min="0" max="77">
+<select id="orientation">
     <option value="upright">upright</option>
     <option value="reversed">reversed</option>
 </select>
 
 <br>
 
-<button onclick="manualLookup()">lookup</button>
-<button onclick="randomDraw()">random draw</button>
+<button onclick="lookupCard()">lookup</button>
+<button onclick="randomCard()">random</button>
 
 <div id="result"></div>
 
+<script src="deck.js"></script>
+
 <script>
+
+function lookupCard() {
+    const num = parseInt(document.getElementById("cardNumber").value);
+    const orientation = document.getElementById("orientation").value;
+
+    if (isNaN(num) || num < 0 || num > 77) {
+        document.getElementById("result").innerHTML = "enter a number 0–77";
+        return;
+    }
+
+    displayCard(num, orientation);
+}
+
+function randomCard() {
+    const num = Math.floor(Math.random() * 78);
+    const orientation = Math.random() < 0.5 ? "upright" : "reversed";
+
+    document.getElementById("cardNumber").value = num;
+    document.getElementById("orientation").value = orientation;
+
+    displayCard(num, orientation);
+}
+
 function displayCard(num, orientation) {
-    const card = deck[num];
+
+    const card = deck.find(c => c.num === num);
 
     if (!card) {
         document.getElementById("result").innerHTML = "card not found";
         return;
     }
 
-    const meaning = card[orientation];
+    const keywords = orientation === "upright"
+        ? card["upright keywords"]
+        : card["reversed keywords"];
 
-    document.getElementById("result").innerHTML =
-        "<strong>" + card.name + "</strong><br>" +
-        orientation + "<br><br>" +
+    document.getElementById("result").innerHTML = `
+        <strong>${card["card title"]}</strong><br>
+        ${orientation}<br><br>
 
-        "<strong>core theme:</strong> " + card.core.join(", ") + "<br><br>" +
+        <strong>core theme:</strong><br>
+        ${card["core themes"]}<br><br>
 
-        "<strong>" + orientation + " keywords:</strong><br>" +
-        meaning.keywords.join(", ") + "<br><br>" +
+        <strong>${orientation} keywords:</strong><br>
+        ${keywords}<br><br>
 
-        "<strong>shadow expression:</strong><br>" +
-        meaning.shadow + "<br><br>" +
+        <strong>shadow expression:</strong><br>
+        ${card["shadow expression"]}<br><br>
 
-        "<strong>growth edge:</strong><br>" +
-        meaning.growth;
-}
-
-
-function manualLookup() {
-    const num = parseInt(document.getElementById("manualNumber").value);
-    const orientation = document.getElementById("orientationSelect").value;
-
-    if (isNaN(num) || num < 0 || num > 77) {
-        document.getElementById("result").innerHTML = "enter a number between 0 and 77";
-        return;
-    }
-
-    displayCard(num, orientation);
-}
-
-
-function randomDraw() {
-    const num = Math.floor(Math.random() * 78);
-    const orientation = Math.random() < 0.5 ? "upright" : "reversed";
-
-    document.getElementById("manualNumber").value = num;
-    document.getElementById("orientationSelect").value = orientation;
-
-    displayCard(num, orientation);
+        <strong>growth edge:</strong><br>
+        ${card["growth edge"]}
+    `;
 }
 
 </script>
