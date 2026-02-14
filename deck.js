@@ -10,7 +10,7 @@ const rawDeck =
     "core themes": "beginnings, innocence, leap of faith",
     "upright keywords": "new journey, spontaneity, risk, freedom, trust, openness",
     "reversed keywords": "recklessness, naivety, poor planning, hesitation, fear of starting",
-    "shadow expression": "avoiding responsibility under the mask of “freedom”",
+    "shadow expression": "avoiding responsibility under the mask of "freedom",
     "growth edge": "trust the leap, but pack wisely",
     "element": "archetypal"
   },
