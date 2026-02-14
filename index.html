@@ -146,6 +146,28 @@ growth: ${meaning.growth}
 
     navigator.clipboard.writeText(text);
 }
+    function manualLookup() {
+    const num = parseInt(document.getElementById("manualNumber").value);
+    const orientation = document.getElementById("orientationSelect").value;
+
+    if (isNaN(num) || num < 0 || num > 77) {
+        document.getElementById("result").innerHTML = "enter a number between 0 and 77";
+        return;
+    }
+
+    displayCard(num, orientation);
+}
+
+function randomDraw() {
+    const num = Math.floor(Math.random() * 78);
+    const orientation = Math.random() < 0.5 ? "upright" : "reversed";
+
+    document.getElementById("manualNumber").value = num;
+    document.getElementById("orientationSelect").value = orientation;
+
+    displayCard(num, orientation);
+}
+
 </script>
 </body>
 </html>
