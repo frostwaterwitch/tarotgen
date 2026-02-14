@@ -4,6 +4,12 @@
 <title>tarot engine</title>
 
 <style>
+:root {
+    --silver: #bfc4cc;
+    --silver-soft: #8f949c;
+    --silver-glow: rgba(191,196,204,0.15);
+}
+
 body {
     font-family: "Calibri", sans;
     background-color: #0b0b0d;
@@ -35,14 +41,14 @@ button {
     font-size: 15px;
     cursor: pointer;
     background-color: #18181c;
-    color: #d4c8a3;
-    border: 1px solid #2a2a30;
+    color: var(--silver);
+    border: 1px solid #2a2f38;
     transition: all 0.2s ease;
 }
 
 button:hover {
-    background-color: #202025;
-    border-color: #3a3a45;
+    background-color: #20242c;
+    border-color: var(--silver-soft);
 }
 
 #result {
@@ -52,15 +58,18 @@ button:hover {
     margin-right: auto;
     background-color: #111114;
     padding: 40px;
-    border: 1px solid #1f1f25;
-    box-shadow: 0 0 40px rgba(0,0,0,0.6);
+    border: 1px solid #1c1f26;
+    box-shadow: 0 0 40px rgba(0,0,0,0.6),
+                0 0 20px var(--silver-glow);
     line-height: 1.7;
+    border-radius: 6px;
 }
 
 .card-title {
     font-size: 28px;
     margin-bottom: 6px;
     letter-spacing: 0.5px;
+    color: var(--silver);
 }
 
 .meta {
@@ -71,17 +80,17 @@ button:hover {
 }
 
 .section-label {
-    font-size: 13px;
-    letter-spacing: 1px;
+    font-size: 12px;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
-    opacity: 0.6;
+    color: var(--silver-soft);
     display: block;
     margin-top: 22px;
 }
 
 .divider {
     height: 1px;
-    background-color: #1e1e24;
+    background: linear-gradient(to right, transparent, var(--silver-glow), transparent);
     margin: 30px 0;
 }
 
