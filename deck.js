@@ -1022,10 +1022,6 @@ const deck = {};
 rawDeck.forEach(card => {
   deck[card.num] = {
     name: card["card title"],
-    arcana: card.arcana,
-    suit: card.suit,
-    element: card.element,
-    face: card.face,
     core: card["core themes"].split(",").map(s => s.trim()),
     upright: {
       keywords: card["upright keywords"].split(",").map(s => s.trim()),
