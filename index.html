@@ -2,19 +2,15 @@
 <html>
 <head>
 <title>tarot engine</title>
+
 <style>
 body {
-    font-family: Georgia, serif;
+    font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #0e0e0f;
-    color: #e8e6e3;
+    background-color: #111;
+    color: #e6e6e6;
     margin: 0;
-    padding: 50px;
-}
-
-h2 {
-    font-weight: normal;
-    letter-spacing: 1px;
+    padding: 40px;
 }
 
 input, select, button {
@@ -25,47 +21,12 @@ input, select, button {
 
 button {
     cursor: pointer;
-    background-color: #1f1f22;
-    color: #e8e6e3;
-    border: 1px solid #333;
-}
-
-button:hover {
-    background-color: #2a2a2f;
 }
 
 #result {
-    margin-top: 40px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.7;
-    opacity: 0;
-    transition: opacity 0.4s ease-in;
-}
-
-.card-title {
-    font-size: 26px;
-    margin-bottom: 5px;
-}
-
-.meta {
-    font-size: 14px;
-    opacity: 0.7;
-    margin-bottom: 25px;
-    text-transform: lowercase;
-}
-
-.section-label {
-    font-weight: bold;
-    margin-top: 20px;
-    display: block;
-}
-
-.divider {
-    height: 1px;
-    background-color: #222;
-    margin: 25px 0;
+    margin-top: 30px;
+    font-size: 20px;
+    line-height: 1.6;
 }
 </style>
 </head>
@@ -86,67 +47,38 @@ button:hover {
 <button onclick="randomDraw()">random draw</button>
 
 <div id="result"></div>
-<script src="deck.js"></script>
 
 <script>
-function displayCard(num, orientation) {
-    const card = deck[num];
 
-    if (!card) {
-        document.getElementById("result").innerHTML = "card not found";
-        return;
+const majors = [
+"the fool","the magician","the high priestess","the empress","the emperor","the hierophant",
+"the lovers","the chariot","strength","the hermit","wheel of fortune","justice",
+"the hanged man","death","temperance","the devil","the tower","the star",
+"the moon","the sun","judgement","the world"
+];
+
+const suits = ["wands","cups","swords","pentacles"];
+const ranks = ["ace","two","three","four","five","six","seven","eight","nine","ten","page","knight","queen","king"];
+
+function getCardName(num) {
+    if (num <= 21) {
+        return majors[num];
     }
 
-    const meaning = card[orientation];
+    let index = num - 22;
+    let suitIndex = Math.floor(index / 14);
+    let rankIndex = index % 14;
 
-    const resultHTML = `
-        <div class="card-title">${card.name}</div>
-        <div class="meta">${orientation} • ${card.arcana} • ${card.element}</div>
-
-        <div class="divider"></div>
-
-        <span class="section-label">core theme</span>
-        ${card.core.join(", ")}
-
-        <span class="section-label">${orientation} keywords</span>
-        ${meaning.keywords.join(", ")}
-
-        <span class="section-label">shadow expression</span>
-        ${meaning.shadow}
-
-        <span class="section-label">growth edge</span>
-        ${meaning.growth}
-
-        <div style="margin-top:30px;">
-            <button onclick="copyReading(${num}, '${orientation}')">
-                copy for notion
-            </button>
-        </div>
-    `;
-
-    const resultDiv = document.getElementById("result");
-    resultDiv.innerHTML = resultHTML;
-    resultDiv.style.opacity = 1;
+    return ranks[rankIndex] + " of " + suits[suitIndex];
 }
-    function copyReading(num, orientation) {
-    const card = deck[num];
-    const meaning = card[orientation];
 
-    const text = `
-${num} — ${card.name} (${orientation})
-
-core: ${card.core.join(", ")}
-
-${orientation} keywords: ${meaning.keywords.join(", ")}
-
-shadow: ${meaning.shadow}
-
-growth: ${meaning.growth}
-    `.trim();
-
-    navigator.clipboard.writeText(text);
+function getMeaning(name, orientation) {
+    return orientation === "upright"
+        ? name + " upright meaning placeholder"
+        : name + " reversed meaning placeholder";
 }
-    function manualLookup() {
+
+function manualLookup() {
     const num = parseInt(document.getElementById("manualNumber").value);
     const orientation = document.getElementById("orientationSelect").value;
 
@@ -155,7 +87,13 @@ growth: ${meaning.growth}
         return;
     }
 
-    displayCard(num, orientation);
+    const cardName = getCardName(num);
+    const meaning = getMeaning(cardName, orientation);
+
+    document.getElementById("result").innerHTML =
+        "<strong>" + cardName + "</strong><br>" +
+        orientation + "<br><br>" +
+        meaning;
 }
 
 function randomDraw() {
@@ -165,9 +103,16 @@ function randomDraw() {
     document.getElementById("manualNumber").value = num;
     document.getElementById("orientationSelect").value = orientation;
 
-    displayCard(num, orientation);
+    const cardName = getCardName(num);
+    const meaning = getMeaning(cardName, orientation);
+
+    document.getElementById("result").innerHTML =
+        "<strong>" + cardName + "</strong><br>" +
+        orientation + "<br><br>" +
+        meaning;
 }
 
 </script>
+
 </body>
 </html>
