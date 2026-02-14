@@ -5,25 +5,82 @@
 
 <style>
 body {
-    font-family: Georgia, serif;
-    text-align: center;
-    background-color: #0e0e0f;
-    color: #e8e6e3;
-    padding: 50px;
+    font-family: "Georgia", serif;
+    background-color: #0b0b0d;
+    color: #e6e2dc;
+    padding: 60px 20px;
+    margin: 0;
 }
 
-input, select, button {
+h2 {
+    font-weight: normal;
+    letter-spacing: 1px;
+    opacity: 0.85;
+}
+
+input, select {
     padding: 8px 12px;
     margin: 8px;
-    font-size: 16px;
+    font-size: 15px;
+    background-color: #151518;
+    color: #e6e2dc;
+    border: 1px solid #2a2a30;
+}
+
+button {
+    padding: 8px 14px;
+    margin: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    background-color: #18181c;
+    color: #d4c8a3;
+    border: 1px solid #2a2a30;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background-color: #202025;
+    border-color: #3a3a45;
 }
 
 #result {
-    margin-top: 40px;
-    max-width: 600px;
+    margin-top: 50px;
+    max-width: 650px;
     margin-left: auto;
     margin-right: auto;
-    line-height: 1.6;
+    background-color: #111114;
+    padding: 40px;
+    border: 1px solid #1f1f25;
+    box-shadow: 0 0 40px rgba(0,0,0,0.6);
+    line-height: 1.7;
+}
+
+.card-title {
+    font-size: 28px;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+}
+
+.meta {
+    font-size: 13px;
+    opacity: 0.6;
+    margin-bottom: 25px;
+    text-transform: lowercase;
+}
+
+.section-label {
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.6;
+    display: block;
+    margin-top: 22px;
+}
+
+.divider {
+    height: 1px;
+    background-color: #1e1e24;
+    margin: 30px 0;
 }
 </style>
 </head>
@@ -85,21 +142,29 @@ function displayCard(num, orientation) {
         : card["reversed keywords"];
 
     document.getElementById("result").innerHTML = `
-        <strong>${card["card title"]}</strong><br>
-        ${orientation}<br><br>
+    <div class="card-title">${card["card title"]}</div>
+    <div class="meta">${orientation} • ${card.arcana} • ${card.element}</div>
 
-        <strong>core theme:</strong><br>
-        ${card["core themes"]}<br><br>
+    <div class="divider"></div>
 
-        <strong>${orientation} keywords:</strong><br>
-        ${keywords}<br><br>
+    <span class="section-label">core theme</span>
+    ${card["core themes"]}
 
-        <strong>shadow expression:</strong><br>
-        ${card["shadow expression"]}<br><br>
+    <span class="section-label">${orientation} keywords</span>
+    ${keywords}
 
-        <strong>growth edge:</strong><br>
-        ${card["growth edge"]}
-    `;
+    <span class="section-label">shadow expression</span>
+    ${card["shadow expression"]}
+
+    <span class="section-label">growth edge</span>
+    ${card["growth edge"]}
+
+    <div style="margin-top:30px;">
+        <button onclick="copyReading(${num}, '${orientation}')">
+            copy for notion
+        </button>
+    </div>
+`;
 }
 
 </script>
