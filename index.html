@@ -1,88 +1,118 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Tarot Generator</title>
+<title>tarot engine</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #191919;
-            color: #D4D4D4;
-            margin: 0;
-        }
+<style>
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #111;
+    color: #e6e6e6;
+    margin: 0;
+    padding: 40px;
+}
 
-        button {
-            padding: 10px 20px;
-            font-size: 18px;
-            cursor: pointer;
-            background-color: #6baed6;
-            color: #191919;
-            border: none;
-            border-radius: 6px;
-        }
+input, select, button {
+    padding: 8px 12px;
+    margin: 8px;
+    font-size: 16px;
+}
 
-        #result {
-            margin-top: 30px;
-            font-size: 24px;
-            min-height: 40px;
-            transition: 0.4s ease;
-        }
+button {
+    cursor: pointer;
+}
 
-        .shuffle {
-            animation: shuffle 0.1s infinite;
-            opacity: 0.7;
-        }
-
-        @keyframes shuffle {
-            0% { transform: translateX(-3px); }
-            50% { transform: translateX(3px); }
-            100% { transform: translateX(-3px); }
-        }
-
-        .reveal {
-            animation: reveal 0.6s ease forwards;
-        }
-
-        @keyframes reveal {
-            0% { opacity: 0; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-    </style>
-
+#result {
+    margin-top: 30px;
+    font-size: 20px;
+    line-height: 1.6;
+}
+</style>
 </head>
+
 <body>
 
-    <h1>Tarot Card Pull</h1>
-    <button id="generateBtn">Generate</button>
-    <div id="result">Click Generate</div>
+<h2>tarot lookup</h2>
 
-    <script>
-        document.getElementById("generateBtn").addEventListener("click", function () {
+<input type="number" id="manualNumber" placeholder="enter 0–77" min="0" max="77">
+<select id="orientationSelect">
+    <option value="upright">upright</option>
+    <option value="reversed">reversed</option>
+</select>
 
-            var resultDiv = document.getElementById("result");
+<br>
 
-            resultDiv.classList.remove("reveal");
-            resultDiv.classList.add("shuffle");
-            resultDiv.innerText = "Shuffling the deck...";
+<button onclick="manualLookup()">lookup</button>
+<button onclick="randomDraw()">random draw</button>
 
-            setTimeout(function () {
+<div id="result"></div>
 
-                var randomNumber = Math.floor(Math.random() * 78) + 1;
-                var orientation = Math.random() < 0.5
-                    ? "Upright ↑"
-                    : "Reversed ↓";
+<script>
 
-                resultDiv.classList.remove("shuffle");
-                resultDiv.classList.add("reveal");
+const majors = [
+"the fool","the magician","the high priestess","the empress","the emperor","the hierophant",
+"the lovers","the chariot","strength","the hermit","wheel of fortune","justice",
+"the hanged man","death","temperance","the devil","the tower","the star",
+"the moon","the sun","judgement","the world"
+];
 
-                resultDiv.innerText =
-                    "Card: " + randomNumber + " (" + orientation + ")";
+const suits = ["wands","cups","swords","pentacles"];
+const ranks = ["ace","two","three","four","five","six","seven","eight","nine","ten","page","knight","queen","king"];
 
-            }, 1200);
+function getCardName(num) {
+    if (num <= 21) {
+        return majors[num];
+    }
 
-        });
-    </script>
+    let index = num - 22;
+    let suitIndex = Math.floor(index / 14);
+    let rankIndex = index % 14;
+
+    return ranks[rankIndex] + " of " + suits[suitIndex];
+}
+
+function getMeaning(name, orientation) {
+    return orientation === "upright"
+        ? name + " upright meaning placeholder"
+        : name + " reversed meaning placeholder";
+}
+
+function manualLookup() {
+    const num = parseInt(document.getElementById("manualNumber").value);
+    const orientation = document.getElementById("orientationSelect").value;
+
+    if (isNaN(num) || num < 0 || num > 77) {
+        document.getElementById("result").innerHTML = "enter a number between 0 and 77";
+        return;
+    }
+
+    const cardName = getCardName(num);
+    const meaning = getMeaning(cardName, orientation);
+
+    document.getElementById("result").innerHTML =
+        "<strong>" + cardName + "</strong><br>" +
+        orientation + "<br><br>" +
+        meaning;
+}
+
+function randomDraw() {
+    const num = Math.floor(Math.random() * 78);
+    const orientation = Math.random() < 0.5 ? "upright" : "reversed";
+
+    document.getElementById("manualNumber").value = num;
+    document.getElementById("orientationSelect").value = orientation;
+
+    const cardName = getCardName(num);
+    const meaning = getMeaning(cardName, orientation);
+
+    document.getElementById("result").innerHTML =
+        "<strong>" + cardName + "</strong><br>" +
+        orientation + "<br><br>" +
+        meaning;
+}
+
+</script>
 
 </body>
 </html>
