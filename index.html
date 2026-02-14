@@ -4,12 +4,17 @@
 <title>tarot engine</title>
 <style>
 body {
-    font-family: Arial, sans-serif;
+    font-family: Georgia, serif;
     text-align: center;
-    background-color: #111;
-    color: #e6e6e6;
+    background-color: #0e0e0f;
+    color: #e8e6e3;
     margin: 0;
-    padding: 40px;
+    padding: 50px;
+}
+
+h2 {
+    font-weight: normal;
+    letter-spacing: 1px;
 }
 
 input, select, button {
@@ -20,12 +25,47 @@ input, select, button {
 
 button {
     cursor: pointer;
+    background-color: #1f1f22;
+    color: #e8e6e3;
+    border: 1px solid #333;
+}
+
+button:hover {
+    background-color: #2a2a2f;
 }
 
 #result {
-    margin-top: 30px;
-    font-size: 20px;
-    line-height: 1.6;
+    margin-top: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+    opacity: 0;
+    transition: opacity 0.4s ease-in;
+}
+
+.card-title {
+    font-size: 26px;
+    margin-bottom: 5px;
+}
+
+.meta {
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 25px;
+    text-transform: lowercase;
+}
+
+.section-label {
+    font-weight: bold;
+    margin-top: 20px;
+    display: block;
+}
+
+.divider {
+    height: 1px;
+    background-color: #222;
+    margin: 25px 0;
 }
 </style>
 </head>
@@ -59,47 +99,55 @@ function displayCard(num, orientation) {
 
     const meaning = card[orientation];
 
-    document.getElementById("result").innerHTML =
-        "<strong>" + card.name + "</strong><br>" +
-        orientation + "<br><br>" +
+    const resultHTML = `
+        <div class="card-title">${card.name}</div>
+        <div class="meta">${orientation} • ${card.arcana} • ${card.element}</div>
 
-        "<strong>core theme:</strong> " + card.core.join(", ") + "<br><br>" +
+        <div class="divider"></div>
 
-        "<strong>" + orientation + " keywords:</strong><br>" +
-        meaning.keywords.join(", ") + "<br><br>" +
+        <span class="section-label">core theme</span>
+        ${card.core.join(", ")}
 
-        "<strong>shadow expression:</strong><br>" +
-        meaning.shadow + "<br><br>" +
+        <span class="section-label">${orientation} keywords</span>
+        ${meaning.keywords.join(", ")}
 
-        "<strong>growth edge:</strong><br>" +
-        meaning.growth;
+        <span class="section-label">shadow expression</span>
+        ${meaning.shadow}
+
+        <span class="section-label">growth edge</span>
+        ${meaning.growth}
+
+        <div style="margin-top:30px;">
+            <button onclick="copyReading(${num}, '${orientation}')">
+                copy for notion
+            </button>
+        </div>
+    `;
+
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = resultHTML;
+    resultDiv.style.opacity = 1;
 }
-
-
-function manualLookup() {
-    const num = parseInt(document.getElementById("manualNumber").value);
-    const orientation = document.getElementById("orientationSelect").value;
-
-    if (isNaN(num) || num < 0 || num > 77) {
-        document.getElementById("result").innerHTML = "enter a number between 0 and 77";
-        return;
-    }
-
-    displayCard(num, orientation);
-}
-
-
-function randomDraw() {
-    const num = Math.floor(Math.random() * 78);
-    const orientation = Math.random() < 0.5 ? "upright" : "reversed";
-
-    document.getElementById("manualNumber").value = num;
-    document.getElementById("orientationSelect").value = orientation;
-
-    displayCard(num, orientation);
-}
-
 </script>
+<script>
+    function copyReading(num, orientation) {
+    const card = deck[num];
+    const meaning = card[orientation];
 
+    const text = `
+${num} — ${card.name} (${orientation})
+
+core: ${card.core.join(", ")}
+
+${orientation} keywords: ${meaning.keywords.join(", ")}
+
+shadow: ${meaning.shadow}
+
+growth: ${meaning.growth}
+    `.trim();
+
+    navigator.clipboard.writeText(text);
+}
+</script>
 </body>
 </html>
