@@ -76,6 +76,7 @@ button {
     color: var(--silver);
     border: 1px solid #2a2f38;
     transition: all 0.2s ease;
+    min-width: 130px;
 }
 
 button:hover {
@@ -97,6 +98,8 @@ button:hover {
                 0 0 20px var(--silver-glow);
     line-height: 1.7;
     overflow-y: auto;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .card-title {
@@ -129,7 +132,8 @@ button:hover {
 }
 
 .container {
-    max-width: 700px;
+    width: 650px;
+    max-width: 90%;
     margin: 0 auto;
     text-align: center;
 }
