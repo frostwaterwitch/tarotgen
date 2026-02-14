@@ -1,6 +1,4 @@
-// paste your entire JSON array below this line
-const rawDeck = 
-[
+const deck = [
   {
     "num": 0,
     "face": "0603170325589_00_678029bbc55011a335aa0623a5fbd863.jpg",
@@ -1016,26 +1014,3 @@ const rawDeck =
     "element": "fire"
   }
 ]
-
-const deck = {};
-
-rawDeck.forEach(card => {
-  deck[card.num] = {
-    name: card["card title"],
-    arcana: card.arcana,
-    suit: card.suit,
-    element: card.element,
-    face: card.face,
-    core: card["core themes"].split(",").map(s => s.trim()),
-    upright: {
-      keywords: card["upright keywords"].split(",").map(s => s.trim()),
-      shadow: card["shadow expression"],
-      growth: card["growth edge"]
-    },
-    reversed: {
-      keywords: card["reversed keywords"].split(",").map(s => s.trim()),
-      shadow: card["shadow expression"],
-      growth: card["growth edge"]
-    }
-  };
-});
