@@ -49,34 +49,32 @@ button {
 <div id="result"></div>
 
 <script>
+function displayCard(num, orientation) {
+    const card = deck[num];
 
-const majors = [
-"the fool","the magician","the high priestess","the empress","the emperor","the hierophant",
-"the lovers","the chariot","strength","the hermit","wheel of fortune","justice",
-"the hanged man","death","temperance","the devil","the tower","the star",
-"the moon","the sun","judgement","the world"
-];
-
-const suits = ["wands","cups","swords","pentacles"];
-const ranks = ["ace","two","three","four","five","six","seven","eight","nine","ten","page","knight","queen","king"];
-
-function getCardName(num) {
-    if (num <= 21) {
-        return majors[num];
+    if (!card) {
+        document.getElementById("result").innerHTML = "card not found";
+        return;
     }
 
-    let index = num - 22;
-    let suitIndex = Math.floor(index / 14);
-    let rankIndex = index % 14;
+    const meaning = card[orientation];
 
-    return ranks[rankIndex] + " of " + suits[suitIndex];
+    document.getElementById("result").innerHTML =
+        "<strong>" + card.name + "</strong><br>" +
+        orientation + "<br><br>" +
+
+        "<strong>core theme:</strong> " + card.core.join(", ") + "<br><br>" +
+
+        "<strong>" + orientation + " keywords:</strong><br>" +
+        meaning.keywords.join(", ") + "<br><br>" +
+
+        "<strong>shadow expression:</strong><br>" +
+        meaning.shadow + "<br><br>" +
+
+        "<strong>growth edge:</strong><br>" +
+        meaning.growth;
 }
 
-function getMeaning(name, orientation) {
-    return orientation === "upright"
-        ? name + " upright meaning placeholder"
-        : name + " reversed meaning placeholder";
-}
 
 function manualLookup() {
     const num = parseInt(document.getElementById("manualNumber").value);
@@ -87,14 +85,9 @@ function manualLookup() {
         return;
     }
 
-    const cardName = getCardName(num);
-    const meaning = getMeaning(cardName, orientation);
-
-    document.getElementById("result").innerHTML =
-        "<strong>" + cardName + "</strong><br>" +
-        orientation + "<br><br>" +
-        meaning;
+    displayCard(num, orientation);
 }
+
 
 function randomDraw() {
     const num = Math.floor(Math.random() * 78);
@@ -103,13 +96,7 @@ function randomDraw() {
     document.getElementById("manualNumber").value = num;
     document.getElementById("orientationSelect").value = orientation;
 
-    const cardName = getCardName(num);
-    const meaning = getMeaning(cardName, orientation);
-
-    document.getElementById("result").innerHTML =
-        "<strong>" + cardName + "</strong><br>" +
-        orientation + "<br><br>" +
-        meaning;
+    displayCard(num, orientation);
 }
 
 </script>
