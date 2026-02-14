@@ -82,11 +82,17 @@ button:hover {
     background-color: #1e1e24;
     margin: 30px 0;
 }
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+}
 </style>
 </head>
 
 <body>
-
+<div class="container">
 <h2>tarot lookup</h2>
 
 <input type="number" id="cardNumber" placeholder="0–77" min="0" max="77">
@@ -168,6 +174,6 @@ function displayCard(num, orientation) {
 }
 
 </script>
-
+</div>
 </body>
 </html>
